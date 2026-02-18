@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -65,4 +65,98 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+} */
+
+/* ===== BACKGROUND ===== */
+body {
+  background-color: #121212;
+  color: #e6e6e6;
+  font-family: "Audiowide", sans-serif;
+}
+
+/* ===== TOP BAR ===== */
+.topbar {
+  background: #242424;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+/* ===== NEON LOGO ===== */
+.logo-neon {
+  font-size: 2.4rem;
+  letter-spacing: 2px;
+  color: #c77dff;
+
+  -webkit-text-stroke: 1px #9d4edd;
+
+  text-shadow:
+    0 0 5px #9d4edd,
+    0 0 12px rgba(157, 78, 221, 0.7),
+    0 0 25px rgba(157, 78, 221, 0.4);
+
+  transition: 0.25s ease;
+}
+
+.logo-neon:hover {
+  color: #e0aaff;
+  text-shadow:
+    0 0 8px #c77dff,
+    0 0 20px #c77dff,
+    0 0 40px rgba(199, 125, 255, 0.9);
+}
+
+/* ===== NAVBAR ===== */
+.main-navbar {
+  background: #111;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+/* links */
+.navbar-nav .nav-link {
+  color: #c77dff !important;
+  text-shadow: 0 0 2px #9d4edd;
+  transition: all 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #e0aaff !important;
+  text-shadow:
+    0 0 5px #c77dff,
+    0 0 10px #c77dff,
+    0 0 20px rgba(199, 125, 255, 0.6);
+}
+
+.navbar-nav .nav-link.active {
+  color: #e0aaff !important;
+  text-shadow:
+    0 0 5px #c77dff,
+    0 0 10px #c77dff,
+    0 0 20px rgba(199, 125, 255, 0.6);
+}
+
+/* hamburger visible on dark */
+.navbar-toggler {
+  border-color: #555;
+}
+
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+.navbar-collapse {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+/* menu items */
+.navbar-nav.fs-4 {
+  display: flex;
+  gap: 20px;
+}
+
+.navbar-nav li:first-child {
+  margin-left: 40px;
+}
+
+.navbar-nav.ms-auto {
+  margin-right: 50px;
 }

@@ -1,20 +1,21 @@
-import { useState } from "react";
-import GamesList from "./components/GamesList";
-import BacklogList from "./components/BacklogList";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import GamesList from "./pages/GamesList";
+import BacklogList from "./pages/BacklogList";
+import Home from "./pages/Home";
 
-function App() {
-  const [page, setPage] = useState<"games" | "backlog">("games");
+export default function App() {
   return (
-    <div>
-      <h1>GameQ</h1>
+    <BrowserRouter>
+      <Header />
 
-      <button onClick={() => setPage("games")}>Games</button>
-      <button onClick={() => setPage("backlog")}>My Backlog</button>
-
-      {page === "games" && <GamesList />}
-      {page === "backlog" && <BacklogList />}
-    </div>
+      <div className="container mt-4">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/games" element={<GamesList />} />
+          <Route path="/backlog" element={<BacklogList />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 }
-
-export default App;
