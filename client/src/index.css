@@ -138,13 +138,45 @@ body {
   border-color: #555;
 }
 
+/* Hamburger icon - match neon purple (override Bootstrap default) */
 .navbar-toggler-icon {
-  filter: invert(1);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23c77dff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+  filter: drop-shadow(0 0 4px #c77dff);
+  transition: filter 0.25s ease;
 }
-.navbar-collapse {
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
+
+/* Remove conflicting invert filter that could cause green tint */
+.navbar-toggler-icon {
+  filter: drop-shadow(0 0 4px #c77dff) !important;
+}
+
+/* Glow on hover/tap */
+.navbar-toggler:hover .navbar-toggler-icon,
+.navbar-toggler:focus .navbar-toggler-icon {
+  filter: drop-shadow(0 0 8px #c77dff) brightness(1.2) !important;
+}
+
+/* Full-width neon divider when mobile menu is open */
+.main-navbar .collapse.show {
+  border-top: 1px solid rgba(199, 125, 255, 0.4);
+  box-shadow: 0 4px 12px rgba(199, 125, 255, 0.2);
+  margin-top: 0.5px;
+  padding-top: 1px;
+  width: 100vw !important;
+  margin-left: calc(-50vw + 50%) !important;
+  margin-right: calc(-50vw + 50%) !important;
+  padding-left: 44px;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+
+/* Desktop centering – only when expanded or always visible */
+@media (min-width: 992px) {
+  .navbar-collapse {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 /* menu items */
@@ -153,10 +185,32 @@ body {
   gap: 20px;
 }
 
+/* keep your original comments exactly as they were */
+
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+/*
+.navbar-collapse {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+*/
+
+/* Divider line when menu is open */
+#mainNav.show {
+  border-top: 1px solid rgba(199, 125, 255, 0.3);
+}
+
+/*
 .navbar-nav li:first-child {
   margin-left: 40px;
 }
-
+*/
+/*
 .navbar-nav.ms-auto {
   margin-right: 50px;
 }
+*/
