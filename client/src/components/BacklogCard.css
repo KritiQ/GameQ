@@ -1,0 +1,94 @@
+/* BACKLOG CARD */
+
+.backlog-card {
+  background: #181818;
+  border: 2px solid rgba(157, 78, 221, 0.2);
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 12px;
+  transition: all 0.25s ease;
+}
+
+.backlog-card:hover {
+  border-color: rgba(199, 125, 255, 0.5);
+  box-shadow:
+    0 0 6px rgba(157, 78, 221, 0.35),
+    0 0 14px rgba(157, 78, 221, 0.12);
+  transform: translateY(-3px);
+}
+
+/* IMAGE */
+
+.backlog-card-img-wrapper {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.backlog-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.4s ease;
+}
+
+.backlog-card:hover .backlog-card-img {
+  transform: scale(1.02);
+}
+
+.backlog-card-placeholder {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777;
+  border-radius: 12px;
+}
+
+/* TEXT */
+
+.backlog-card .card-title {
+  color: #c77dff;
+  text-shadow: 0 0 4px rgba(157, 78, 221, 0.6);
+}
+
+.backlog-card .card-text {
+  color: #b08bdc;
+  font-size: 0.9rem;
+}
+
+/* STATUS BADGE */
+
+.status-badge {
+  margin-left: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* PLANNED –  pink */
+.status-badge.planned {
+  background: #ccc9233a;
+  color: #f0fd31;
+  box-shadow: 0 0 4px rgba(243, 228, 17, 0.384);
+}
+
+/* REMOVE BUTTON */
+
+.backlog-card .btn-danger {
+  background-color: #9d4edd;
+  border: none;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.backlog-card .btn-danger:hover {
+  background-color: #c77dff;
+  box-shadow: 0 0 8px rgba(199, 125, 255, 0.7);
+}
