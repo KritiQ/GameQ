@@ -6,6 +6,22 @@ import "./BacklogList.css";
 export default function MyBacklog() {
   const [entries, setEntries] = useState<BacklogEntry[]>([]);
 
+  async function changeStatus(id: number, status: string) {
+    try {
+      const res = await fetch(`http://localhost:3001/backlog/${id}/status`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status }),
+      });
+
+      if (!res.ok) throw new Error("Failed to update");
+
+      loadBacklog();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   async function loadBacklog() {
     try {
       const res = await fetch("http://localhost:3001/backlog/1"); //endpoint for id = 1 for user
@@ -38,7 +54,11 @@ export default function MyBacklog() {
         <div className="row">
           {entries.map((entry) => (
             <div key={entry.id} className="col-lg-4 col-md-6 col-sm-12 mb-4">
-              <BacklogCard entry={entry} onRemove={remove} />
+              <BacklogCard
+                entry={entry}
+                onRemove={remove}
+                onStatusChange={changeStatus}
+              />
             </div>
           ))}
         </div>

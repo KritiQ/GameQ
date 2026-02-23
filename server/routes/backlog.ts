@@ -127,4 +127,36 @@ router.delete("/:id", async (req: Request, res: Response) => {
   }
 });
 
+// PUT /backlog/:id/status
+router.put("/:id/status", async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+    const { status } = req.body;
+
+    if (isNaN(id)) {
+      return res.status(400).json({ error: "Invalid ID" });
+    }
+
+    if (!["planned", "playing", "completed", "dropped"].includes(status)) {
+      return res.status(400).json({ error: "Invalid status" });
+    }
+
+    const updated = await prisma.backlogEntry.update({
+      where: { id },
+      data: { status },
+      include: { game: true },
+    });
+
+    res.json(updated);
+  } catch (error: any) {
+    console.error("PUT /backlog/:id/status error:", error);
+
+    if (error.code === "P2025") {
+      return res.status(404).json({ error: "Backlog entry not found" });
+    }
+
+    res.status(500).json({ error: "Failed to update status" });
+  }
+});
+
 export default router;

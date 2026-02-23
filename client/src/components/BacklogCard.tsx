@@ -4,9 +4,14 @@ import "./BacklogCard.css";
 type BacklogCardProps = {
   entry: BacklogEntry;
   onRemove: (id: number) => void;
+  onStatusChange: (id: number, status: string) => void;
 };
 
-export default function BacklogCard({ entry, onRemove }: BacklogCardProps) {
+export default function BacklogCard({
+  entry,
+  onRemove,
+  onStatusChange,
+}: BacklogCardProps) {
   const game = entry.game;
 
   if (!game) {
@@ -34,10 +39,21 @@ export default function BacklogCard({ entry, onRemove }: BacklogCardProps) {
           Rating: {game.rating ? game.rating.toFixed(1) : "N/A"}
         </p>
 
-        <p className="card-text small mb-2">
-          Status:
-          <span className={`status-badge ${entry.status}`}>{entry.status}</span>
-        </p>
+        <div className="mb-3">
+          <label className="card-text small d-block mb-1">Status</label>
+          <select
+            className={`form-select form-select-sm status-select ${entry.status}`}
+            value={entry.status}
+            onChange={(e) => onStatusChange(entry.id, e.target.value)}
+            onFocus={(e) => e.currentTarget.classList.add("focused")}
+            onBlur={(e) => e.currentTarget.classList.remove("focused")}
+          >
+            <option value="planned">Planned</option>
+            <option value="playing">Playing</option>
+            <option value="completed">Completed</option>
+            <option value="dropped">Dropped</option>
+          </select>
+        </div>
 
         <p className="card-text small mb-3">
           Added: {new Date(entry.addedAt).toLocaleDateString()}
