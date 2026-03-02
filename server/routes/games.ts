@@ -11,14 +11,16 @@ if (!RAWG_KEY) {
 }
 
 router.get("/", async (req, res) => {
-  const { page = 1, page_size = 50, search } = req.query;
+  const page = Number(req.query.page) || 1;
+  const pageSize = Number(req.query.page_size) || 18;
+  const search = req.query.search as string | undefined;
 
   try {
     // Fetch from RAWG
     const params: any = {
       key: RAWG_KEY,
       page,
-      page_size,
+      page_size: pageSize,
       ordering: "-rating", // popular/high-rated first
       exclude_additions: true, // exclude dlcs and others only games
     };
@@ -59,7 +61,12 @@ router.get("/", async (req, res) => {
       rating: game.rating,
     }));
 
-    res.json(games);
+    res.json({
+      results: games,
+      page,
+      pageSize,
+      total: response.data.count,
+    });
   } catch (error: any) {
     console.error("Games fetch/upsert error:", error.message);
     res.status(500).json({ error: "Failed to load games" });

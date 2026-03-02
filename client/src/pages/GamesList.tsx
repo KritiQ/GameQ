@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import type { Game } from "../types";
 import { getDefaultGames } from "../api/games";
 import GameCard from "../components/GameCard";
@@ -11,6 +12,12 @@ export default function GamesList() {
   const [backlogRawgIds, setBacklogRawgIds] = useState<number[]>([]);
   const [message, setMessage] = useState("");
 
+  const [total, setTotal] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get("page")) || 1;
+  const pageSize = 18;
+
+  /* Load backlog IDs */
   useEffect(() => {
     fetch("http://localhost:3001/backlog/1")
       .then((res) => {
@@ -20,16 +27,34 @@ export default function GamesList() {
       .then((data: any[]) =>
         setBacklogRawgIds(data.map((entry) => entry.game.rawgId)),
       )
-      .catch((err) => console.error(err));
+      .catch(console.error);
   }, []);
 
+  /* Load games when page changes */
   useEffect(() => {
-    getDefaultGames().then((data) => {
-      setGames(data);
-      setFilteredGames(data);
-    });
-  }, []);
+    async function loadGames() {
+      const data = await getDefaultGames(page);
 
+      setGames(data.results);
+      setFilteredGames(data.results);
+      setTotal(data.total);
+
+      // smooth scroll AFTER data is loaded
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+
+    loadGames();
+  }, [page]);
+
+  /* Pagination handlers */
+  const changePage = (newPage: number) => {
+    setSearchParams({ page: String(newPage) });
+  };
+
+  /* Search */
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearch(value);
@@ -37,9 +62,11 @@ export default function GamesList() {
     const filtered = games.filter((g) =>
       g.title.toLowerCase().includes(value.toLowerCase()),
     );
+
     setFilteredGames(filtered);
   };
 
+  /* Add backlog */
   async function addToBacklog(rawgId: number) {
     const game = games.find((g) => g.id === rawgId);
     if (!game) return;
@@ -65,6 +92,7 @@ export default function GamesList() {
 
       setBacklogRawgIds((prev) => [...prev, rawgId]);
       setMessage(`${game.title} added!`);
+
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       console.error(err);
@@ -72,13 +100,13 @@ export default function GamesList() {
     }
   }
 
+  const totalPages = Math.ceil(total / pageSize);
+
   return (
     <div className="games-list-container">
       <div className="container mt-3">
-        {/* Title */}
         <h2 className="mb-3">Games</h2>
 
-        {/* Search bar */}
         <div className="mb-4">
           <input
             type="text"
@@ -89,7 +117,6 @@ export default function GamesList() {
           />
         </div>
 
-        {/* Cards grid */}
         <div className="row">
           {filteredGames.map((game) => (
             <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={game.id}>
@@ -103,6 +130,28 @@ export default function GamesList() {
         </div>
 
         {message && <p className="message">{message}</p>}
+      </div>
+
+      <div className="d-flex justify-content-center align-items-center mt-4 gap-3">
+        <button
+          className="btn btn-outline-light"
+          disabled={page === 1}
+          onClick={() => changePage(page - 1)}
+        >
+          Previous
+        </button>
+
+        <span>
+          Page {page} of {totalPages || 1}
+        </span>
+
+        <button
+          className="btn btn-outline-light"
+          disabled={page === totalPages}
+          onClick={() => changePage(page + 1)}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
