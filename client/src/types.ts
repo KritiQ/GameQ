@@ -15,3 +15,17 @@ export type BacklogEntry = {
   game: Game;
   userId: number;
 };
+
+export type GameDetailType = {
+  rawgId: number;
+  title: string;
+  cover?: string;
+  description?: string;
+  released?: string;
+  rating?: number;
+  metacritic?: number;
+  website?: string;
+  playtime?: number;
+  platforms?: string;
+  backgroundExtra?: string;
+};

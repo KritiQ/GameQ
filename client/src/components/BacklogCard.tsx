@@ -1,4 +1,5 @@
 import type { BacklogEntry } from "../types";
+import { Link } from "react-router-dom";
 import "./BacklogCard.css";
 
 type BacklogCardProps = {

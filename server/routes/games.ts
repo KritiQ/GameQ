@@ -44,8 +44,8 @@ router.get("/", async (req, res) => {
             released: g.released || null,
             rating: g.rating || null,
           },
-        })
-      )
+        }),
+      ),
     );
 
     // Map games for frontend (id = rawgId)
@@ -61,6 +61,59 @@ router.get("/", async (req, res) => {
   } catch (error: any) {
     console.error("Games fetch/upsert error:", error.message);
     res.status(500).json({ error: "Failed to load games" });
+  }
+});
+router.get("/:id", async (req, res) => {
+  const rawgId = Number(req.params.id);
+
+  try {
+    // find in db
+    let game = await prisma.game.findUnique({
+      where: { rawgId },
+    });
+
+    // get from rawg if not in db
+    if (!game || !game.description) {
+      const response = await axios.get(`${RAWG_BASE_URL}/${rawgId}`, {
+        params: { key: RAWG_KEY },
+      });
+
+      const g = response.data;
+
+      game = await prisma.game.upsert({
+        where: { rawgId },
+        update: {
+          description: g.description || null,
+          backgroundExtra: g.background_image_additional || null,
+          website: g.website || null,
+          metacritic: g.metacritic || null,
+          playtime: g.playtime || null,
+          platforms: g.platforms
+            ? JSON.stringify(g.platforms.map((p: any) => p.platform.name))
+            : null,
+        },
+        create: {
+          rawgId: g.id,
+          title: g.name,
+          cover: g.background_image || null,
+          released: g.released || null,
+          rating: g.rating || null,
+          description: g.description || null,
+          backgroundExtra: g.background_image_additional || null,
+          website: g.website || null,
+          metacritic: g.metacritic || null,
+          playtime: g.playtime || null,
+          platforms: g.platforms
+            ? JSON.stringify(g.platforms.map((p: any) => p.platform.name))
+            : null,
+        },
+      });
+    }
+
+    res.json(game);
+  } catch (error) {
+    console.error("Game detail error:", error);
+    res.status(500).json({ error: "Failed to fetch game detail" });
   }
 });
 

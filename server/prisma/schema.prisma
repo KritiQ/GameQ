@@ -16,13 +16,22 @@ model User {
 }
 
 model Game {
-  id        Int             @id @default(autoincrement())
-  rawgId    Int             @unique
-  title     String
-  cover     String?
-  released  String?
-  rating    Float?
-  backlog   BacklogEntry[]
+  id              Int      @id @default(autoincrement())
+  rawgId          Int      @unique
+  title           String
+  cover           String?
+  released        String?
+  rating          Float?
+
+  description     String?
+  backgroundExtra String?
+  website         String?
+  metacritic      Int?
+  playtime        Int?
+
+  platforms       String?
+
+  backlog         BacklogEntry[]
 }
 
 model BacklogEntry {

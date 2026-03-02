@@ -1,0 +1,36 @@
+.game-hero {
+  height: 350px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+}
+
+.game-hero .overlay {
+  background: linear-gradient(to top, #121212, transparent);
+  width: 100%;
+  padding: 30px;
+}
+
+.game-hero h1 {
+  color: #c77dff;
+  text-shadow: 0 0 8px rgba(157, 78, 221, 0.8);
+}
+
+.detail-box {
+  background: #181818;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(157, 78, 221, 0.3);
+}
+
+.platform-badge {
+  display: inline-block;
+  margin: 4px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #9d4edd;
+  color: white;
+  font-size: 0.8rem;
+}
