@@ -20,13 +20,15 @@ router.get("/", async (req, res) => {
       page,
       page_size,
       ordering: "-rating", // popular/high-rated first
+      exclude_additions: true, // exclude dlcs and others only games
     };
     if (search) params.search = search;
 
     const response = await axios.get(RAWG_BASE_URL, { params });
-    const rawgGames = response.data.results;
 
-    // Upsert each into DB (transaction for efficiency)
+    const rawgGames = response.data.results.filter((g: any) => !g.parent_game);
+
+    // Upsert each into DB
     const upsertedGames = await prisma.$transaction(
       rawgGames.map((g: any) =>
         prisma.game.upsert({
