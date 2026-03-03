@@ -1,5 +1,5 @@
 import type { BacklogEntry } from "../types";
-import { Link } from "react-router-dom";
+import { formatDate } from "../utils/formatDate";
 import "./BacklogCard.css";
 
 type BacklogCardProps = {
@@ -33,7 +33,7 @@ export default function BacklogCard({
         <h5 className="card-title">{game.title}</h5>
 
         <p className="card-text small mb-1">
-          Released: {game.released || "N/A"}
+          Released: {formatDate(game.released)}
         </p>
 
         <p className="card-text small mb-1">
@@ -46,8 +46,6 @@ export default function BacklogCard({
             className={`form-select form-select-sm status-select ${entry.status}`}
             value={entry.status}
             onChange={(e) => onStatusChange(entry.id, e.target.value)}
-            onFocus={(e) => e.currentTarget.classList.add("focused")}
-            onBlur={(e) => e.currentTarget.classList.remove("focused")}
           >
             <option value="planned">Planned</option>
             <option value="playing">Playing</option>
@@ -57,7 +55,7 @@ export default function BacklogCard({
         </div>
 
         <p className="card-text small mb-3">
-          Added: {new Date(entry.addedAt).toLocaleDateString()}
+          Added: {formatDate(entry.addedAt)}
         </p>
 
         <div className="mt-auto">

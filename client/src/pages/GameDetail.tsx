@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { GameDetailType } from "../types";
+import { formatDate } from "../utils/formatDate";
 import "./GameDetail.css";
 
 export default function GameDetail() {
@@ -31,7 +32,7 @@ export default function GameDetail() {
       >
         <div className="overlay">
           <h1>{game.title}</h1>
-          <p>Released: {game.released || "N/A"}</p>
+          <p>Released: {formatDate(game.released)}</p>
         </div>
       </div>
 

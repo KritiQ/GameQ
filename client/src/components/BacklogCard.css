@@ -93,37 +93,52 @@
   box-shadow: 0 0 8px rgba(199, 125, 255, 0.7);
 }
 
-/* Default look for status */
+/* STATUS SELECT DROPDOWN */
+
 .status-select {
   background: #1f1f1f;
-  border: 1px solid rgba(157, 78, 221, 0.4);
+  border: 2px solid rgba(157, 78, 221, 0.35);
   border-radius: 8px;
+  color: #caa9f5;
+
   transition: all 0.2s ease;
+  appearance: none;
+  padding-right: 30px;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23c77dff'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
 }
 
-/* Dropdown menu color */
-.status-select.focused {
-  color: #c77dff;
+/* Hover + Focus */
+.status-select:hover,
+.status-select:focus {
+  border-color: rgba(199, 125, 255, 0.7);
+  box-shadow: 0 0 6px rgba(157, 78, 221, 0.25);
+  outline: none;
+}
+
+/* Dropdown options */
+.status-select option {
+  background: #1f1f1f;
+  color: #caa9f5;
 }
 
 /* Status colors */
+
 .status-select.planned {
   color: #f0fd31;
 }
 
 .status-select.playing {
-  color: #00d4ff;
+  color: #ff8ed6;
 }
 
 .status-select.completed {
-  color: #6eff6e;
+  color: #8fffba;
 }
 
 .status-select.dropped {
-  color: #ff5c5c;
-}
-
-.status-select option {
-  background-color: #1f1f1f;
-  color: #c77dff;
+  color: #ff7b7b;
 }

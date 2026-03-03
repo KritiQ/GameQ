@@ -12,64 +12,101 @@ if (!RAWG_KEY) {
 
 router.get("/", async (req, res) => {
   const page = Number(req.query.page) || 1;
-  const pageSize = Number(req.query.page_size) || 18;
+  const pageSize = Number(req.query.page_size) || 24;
   const search = req.query.search as string | undefined;
 
   try {
-    // Fetch from RAWG
-    const params: any = {
-      key: RAWG_KEY,
-      page,
-      page_size: pageSize,
-      ordering: "-rating", // popular/high-rated first
-      exclude_additions: true, // exclude dlcs and others only games
-    };
-    if (search) params.search = search;
-
-    const response = await axios.get(RAWG_BASE_URL, { params });
-
-    const rawgGames = response.data.results.filter((g: any) => !g.parent_game);
-
-    // Upsert each into DB
-    const upsertedGames = await prisma.$transaction(
-      rawgGames.map((g: any) =>
-        prisma.game.upsert({
-          where: { rawgId: g.id },
-          update: {
-            title: g.name,
-            cover: g.background_image || null,
-            released: g.released || null,
-            rating: g.rating || null,
+    const whereCondition = search
+      ? {
+          title: {
+            contains: search,
           },
-          create: {
-            rawgId: g.id,
-            title: g.name,
-            cover: g.background_image || null,
-            released: g.released || null,
-            rating: g.rating || null,
-          },
-        }),
-      ),
-    );
+        }
+      : {};
 
-    // Map games for frontend (id = rawgId)
-    const games = upsertedGames.map((game) => ({
-      id: game.rawgId,
-      title: game.title,
-      cover: game.cover,
-      released: game.released,
-      rating: game.rating,
-    }));
+    const [games, total] = await prisma.$transaction([
+      prisma.game.findMany({
+        where: whereCondition,
+        orderBy: {
+          rating: "desc",
+        },
+        skip: (page - 1) * pageSize,
+        take: pageSize,
+      }),
+      prisma.game.count({
+        where: whereCondition,
+      }),
+    ]);
 
     res.json({
-      results: games,
+      results: games.map((game) => ({
+        id: game.rawgId,
+        title: game.title,
+        cover: game.cover,
+        released: game.released,
+        rating: game.rating,
+      })),
       page,
       pageSize,
-      total: response.data.count,
+      total,
     });
-  } catch (error: any) {
-    console.error("Games fetch/upsert error:", error.message);
-    res.status(500).json({ error: "Failed to load games" });
+  } catch (error) {
+    console.error("DB fetch error:", error);
+    res.status(500).json({ error: "Failed to fetch games" });
+  }
+});
+router.post("/sync", async (req, res) => {
+  try {
+    let currentPage = 1;
+    let hasNextPage = true;
+    const pageSize = 40;
+
+    while (hasNextPage && currentPage <= 50) {
+      const response = await axios.get(RAWG_BASE_URL, {
+        params: {
+          key: RAWG_KEY,
+          page: currentPage,
+          page_size: pageSize,
+          ordering: "-added",
+          exclude_additions: true,
+        },
+      });
+
+      const rawgGames = response.data.results.filter(
+        (g: any) => !g.parent_game && g.released,
+      );
+
+      await prisma.$transaction(
+        rawgGames.map((g: any) =>
+          prisma.game.upsert({
+            where: { rawgId: g.id },
+            update: {
+              title: g.name,
+              cover: g.background_image || null,
+              released: g.released || null,
+              rating: g.rating || null,
+            },
+            create: {
+              rawgId: g.id,
+              title: g.name,
+              cover: g.background_image || null,
+              released: g.released || null,
+              rating: g.rating || null,
+            },
+          }),
+        ),
+      );
+
+      console.log(`Synced page ${currentPage}`);
+
+      hasNextPage = !!response.data.next;
+      currentPage++;
+    }
+
+    res.json({ message: "Database fully synced!" });
+  } catch (error) {
+    console.error("Sync error:", error);
+    res.status(500).json({ error: "Failed to sync database" });
   }
 });
 router.get("/:id", async (req, res) => {

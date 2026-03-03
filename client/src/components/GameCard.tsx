@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { Game } from "../types";
+import { formatDate } from "../utils/formatDate";
 import "./GameCard.css";
 
 type GameCardProps = {
@@ -24,7 +25,7 @@ export default function GameCard({ game, inBacklog, onAdd }: GameCardProps) {
           <h5 className="card-title">{game.title}</h5>
 
           <p className="card-text small mb-1">
-            Released: {game.released || "N/A"}
+            Released: {formatDate(game.released)}
           </p>
 
           <p className="card-text small mb-3 rating-text">
@@ -35,7 +36,11 @@ export default function GameCard({ game, inBacklog, onAdd }: GameCardProps) {
             {!inBacklog && (
               <button
                 className="btn btn-primary btn-md w-100"
-                onClick={() => onAdd(game.id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  onAdd(game.id);
+                }}
               >
                 Add to backlog
               </button>

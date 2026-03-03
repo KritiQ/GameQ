@@ -7,15 +7,14 @@ import "./GamesList.css";
 
 export default function GamesList() {
   const [games, setGames] = useState<Game[]>([]);
-  const [filteredGames, setFilteredGames] = useState<Game[]>([]);
-  const [search, setSearch] = useState("");
   const [backlogRawgIds, setBacklogRawgIds] = useState<number[]>([]);
   const [message, setMessage] = useState("");
 
   const [total, setTotal] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
-  const pageSize = 18;
+  const searchQuery = searchParams.get("search") || "";
+  const pageSize = 24;
 
   /* Load backlog IDs */
   useEffect(() => {
@@ -33,37 +32,40 @@ export default function GamesList() {
   /* Load games when page changes */
   useEffect(() => {
     async function loadGames() {
-      const data = await getDefaultGames(page);
+      try {
+        const data = await getDefaultGames(page, searchQuery);
 
-      setGames(data.results);
-      setFilteredGames(data.results);
-      setTotal(data.total);
+        setGames(data.results);
+        setTotal(data.total);
 
-      // smooth scroll AFTER data is loaded
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
+        // scroll after getting data
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     loadGames();
-  }, [page]);
-
+  }, [page, searchQuery]);
   /* Pagination handlers */
   const changePage = (newPage: number) => {
-    setSearchParams({ page: String(newPage) });
+    setSearchParams({
+      page: String(newPage),
+      ...(searchQuery ? { search: searchQuery } : {}),
+    });
   };
 
   /* Search */
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setSearch(value);
 
-    const filtered = games.filter((g) =>
-      g.title.toLowerCase().includes(value.toLowerCase()),
-    );
-
-    setFilteredGames(filtered);
+    setSearchParams({
+      page: "1",
+      ...(value ? { search: value } : {}),
+    });
   };
 
   /* Add backlog */
@@ -91,7 +93,6 @@ export default function GamesList() {
       if (!res.ok) throw new Error(`Failed to add (${res.status})`);
 
       setBacklogRawgIds((prev) => [...prev, rawgId]);
-      setMessage(`${game.title} added!`);
 
       setTimeout(() => setMessage(""), 3000);
     } catch (err) {
@@ -111,14 +112,14 @@ export default function GamesList() {
           <input
             type="text"
             placeholder="What do you want to play next?"
-            value={search}
+            value={searchQuery}
             onChange={handleSearch}
             className="form-control"
           />
         </div>
 
         <div className="row">
-          {filteredGames.map((game) => (
+          {games.map((game) => (
             <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={game.id}>
               <GameCard
                 game={game}
@@ -138,7 +139,7 @@ export default function GamesList() {
           disabled={page === 1}
           onClick={() => changePage(page - 1)}
         >
-          Previous
+          Prev
         </button>
 
         <span>

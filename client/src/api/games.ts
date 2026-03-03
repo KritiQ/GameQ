@@ -1,7 +1,7 @@
-export async function getDefaultGames(page: number = 1) {
+export async function getDefaultGames(page = 1, search = "") {
   try {
     const res = await fetch(
-      `http://localhost:3001/games?page=${page}&page_size=18`,
+      `http://localhost:3001/games?page=${page}&page_size=24&search=${search}`,
     );
 
     if (!res.ok) throw new Error("Failed to fetch games");
