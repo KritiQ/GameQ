@@ -1,7 +1,4 @@
 /* Container & Title */
-.games-list-container {
-  padding: 20px;
-}
 .games-list-container input::placeholder {
   color: rgba(197, 121, 255, 0.404);
   text-shadow: 0 0 2px rgba(199, 125, 255, 0.4);

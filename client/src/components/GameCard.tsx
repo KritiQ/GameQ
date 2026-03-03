@@ -28,7 +28,7 @@ export default function GameCard({ game, inBacklog, onAdd }: GameCardProps) {
             Released: {formatDate(game.released)}
           </p>
 
-          <p className="card-text small mb-3 rating-text">
+          <p className="card-text small mb-1 rating-text">
             Rating: {game.rating ? game.rating.toFixed(1) : "N/A"}
           </p>
 

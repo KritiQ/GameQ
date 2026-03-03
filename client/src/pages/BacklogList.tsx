@@ -45,24 +45,31 @@ export default function MyBacklog() {
   }, []);
 
   return (
-    <div className="container mt-3 backlog-container">
-      <h2 className="mb-4">My Backlog</h2>
+    <div className="games-list-container">
+      <div className="page-section">
+        <div className="container mt-3 backlog-container">
+          <h2 className="mb-4">Backlog</h2>
 
-      {entries.length === 0 ? (
-        <p>No games in backlog yet.</p>
-      ) : (
-        <div className="row">
-          {entries.map((entry) => (
-            <div key={entry.id} className="col-lg-4 col-md-6 col-sm-12 mb-4">
-              <BacklogCard
-                entry={entry}
-                onRemove={remove}
-                onStatusChange={changeStatus}
-              />
+          {entries.length === 0 ? (
+            <p>No games in backlog yet.</p>
+          ) : (
+            <div className="row">
+              {entries.map((entry) => (
+                <div
+                  key={entry.id}
+                  className="col-lg-4 col-md-6 col-sm-12 mb-4"
+                >
+                  <BacklogCard
+                    entry={entry}
+                    onRemove={remove}
+                    onStatusChange={changeStatus}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

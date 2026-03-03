@@ -121,6 +121,17 @@ body {
 .navbar-toggler-icon {
   filter: invert(1);
 }
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
 /*
 .navbar-collapse {
   display: flex !important;

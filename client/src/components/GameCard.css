@@ -103,3 +103,8 @@
   font-weight: bold;
   box-shadow: 0 0 8px rgba(199, 125, 255, 0.7);
 }
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}

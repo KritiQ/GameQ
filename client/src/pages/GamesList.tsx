@@ -31,24 +31,33 @@ export default function GamesList() {
 
   /* Load games when page changes */
   useEffect(() => {
+    let isMounted = true;
+
     async function loadGames() {
       try {
         const data = await getDefaultGames(page, searchQuery);
 
+        if (!isMounted) return;
+
         setGames(data.results);
         setTotal(data.total);
 
-        // scroll after getting data
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
+        if (page !== 1) {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        }
       } catch (error) {
         console.error(error);
       }
     }
 
     loadGames();
+
+    return () => {
+      isMounted = false;
+    };
   }, [page, searchQuery]);
   /* Pagination handlers */
   const changePage = (newPage: number) => {
@@ -105,54 +114,56 @@ export default function GamesList() {
 
   return (
     <div className="games-list-container">
-      <div className="container mt-3">
-        <h2 className="mb-3">Games</h2>
+      <div className="page-section">
+        <div className="container mt-3">
+          <h2 className="mb-4">Games</h2>
 
-        <div className="mb-4">
-          <input
-            type="text"
-            placeholder="What do you want to play next?"
-            value={searchQuery}
-            onChange={handleSearch}
-            className="form-control"
-          />
+          <div className="mb-3">
+            <input
+              type="text"
+              placeholder="What do you want to play next?"
+              value={searchQuery}
+              onChange={handleSearch}
+              className="form-control"
+            />
+          </div>
+
+          <div className="row">
+            {games.map((game) => (
+              <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={game.id}>
+                <GameCard
+                  game={game}
+                  inBacklog={backlogRawgIds.includes(game.id)}
+                  onAdd={addToBacklog}
+                />
+              </div>
+            ))}
+          </div>
+
+          {message && <p className="message">{message}</p>}
         </div>
 
-        <div className="row">
-          {games.map((game) => (
-            <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={game.id}>
-              <GameCard
-                game={game}
-                inBacklog={backlogRawgIds.includes(game.id)}
-                onAdd={addToBacklog}
-              />
-            </div>
-          ))}
+        <div className="d-flex justify-content-center align-items-center mt-4 gap-3">
+          <button
+            className="btn btn-outline-light"
+            disabled={page === 1}
+            onClick={() => changePage(page - 1)}
+          >
+            Prev
+          </button>
+
+          <span>
+            Page {page} of {totalPages || 1}
+          </span>
+
+          <button
+            className="btn btn-outline-light"
+            disabled={page === totalPages}
+            onClick={() => changePage(page + 1)}
+          >
+            Next
+          </button>
         </div>
-
-        {message && <p className="message">{message}</p>}
-      </div>
-
-      <div className="d-flex justify-content-center align-items-center mt-4 gap-3">
-        <button
-          className="btn btn-outline-light"
-          disabled={page === 1}
-          onClick={() => changePage(page - 1)}
-        >
-          Prev
-        </button>
-
-        <span>
-          Page {page} of {totalPages || 1}
-        </span>
-
-        <button
-          className="btn btn-outline-light"
-          disabled={page === totalPages}
-          onClick={() => changePage(page + 1)}
-        >
-          Next
-        </button>
       </div>
     </div>
   );

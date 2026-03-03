@@ -1,0 +1,7 @@
+.main-navbar {
+  transform: translateX(-13px);
+}
+.account-icon {
+  padding-left: 780px;
+  transition: transform 0.2s ease;
+}
