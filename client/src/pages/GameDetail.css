@@ -1,21 +1,34 @@
 .game-hero {
-  height: 350px;
-  background-size: cover;
+  height: 300px;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
-  position: relative;
-  display: flex;
-  align-items: flex-end;
+  background-color: #121212;
+  border-radius: 16px;
 }
 
-.game-hero .overlay {
-  background: linear-gradient(to top, #121212, transparent);
+.game-hero-wrapper {
   width: 100%;
-  padding: 30px;
+  max-height: 500px;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #121212;
+}
+.game-detail-wrapper {
+  display: flex;
+  justify-content: center;
 }
 
-.game-hero h1 {
-  color: #c77dff;
-  text-shadow: 0 0 8px rgba(157, 78, 221, 0.8);
+.game-detail-container {
+  width: 100%;
+  max-width: 1216px;
+  padding: 0 20px;
+}
+
+.game-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .detail-box {
@@ -33,4 +46,46 @@
   background: #9d4edd;
   color: white;
   font-size: 0.8rem;
+}
+.genre-tags {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.genre-badge {
+  display: inline-block;
+  margin: 4px;
+  padding: 6px 12px;
+  border-radius: 20px;
+
+  background: rgba(157, 78, 221, 0.2);
+  color: #c77dff;
+  border: 1px solid rgba(157, 78, 221, 0.4);
+
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.genre-badge:hover {
+  background: rgba(199, 125, 255, 0.3);
+  box-shadow: 0 0 6px rgba(157, 78, 221, 0.3);
+}
+.detail-title {
+  color: #c77dff;
+  text-shadow:
+    0 0 4px #9d4edd,
+    0 0 10px rgba(157, 78, 221, 0.4),
+    0 0 20px rgba(199, 125, 255, 0.3);
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+.detail-sub {
+  color: #aaa;
+  margin-bottom: 20px;
 }

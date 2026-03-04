@@ -3,8 +3,8 @@ export type Game = {
   title: string;
   cover?: string | null;
   rating?: number | null;
-  released?: string | null;
-  // genre?: string;
+  released?: string;
+  genres?: string[];
   // year?: number;
 };
 
@@ -28,4 +28,5 @@ export type GameDetailType = {
   playtime?: number;
   platforms?: string;
   backgroundExtra?: string;
+  genres?: string[];
 };

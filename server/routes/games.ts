@@ -45,6 +45,7 @@ router.get("/", async (req, res) => {
         cover: game.cover,
         released: game.released,
         rating: game.rating,
+        genres: game.genres ? JSON.parse(game.genres) : [],
       })),
       page,
       pageSize,
@@ -85,6 +86,9 @@ router.post("/sync", async (req, res) => {
               cover: g.background_image || null,
               released: g.released || null,
               rating: g.rating || null,
+              genres: g.genres
+                ? JSON.stringify(g.genres.map((genre: any) => genre.name))
+                : null,
             },
             create: {
               rawgId: g.id,
@@ -92,6 +96,9 @@ router.post("/sync", async (req, res) => {
               cover: g.background_image || null,
               released: g.released || null,
               rating: g.rating || null,
+              genres: g.genres
+                ? JSON.stringify(g.genres.map((genre: any) => genre.name))
+                : null,
             },
           }),
         ),
@@ -156,7 +163,10 @@ router.get("/:id", async (req, res) => {
       });
     }
 
-    res.json(game);
+    res.json({
+      ...game,
+      genres: game.genres ? JSON.parse(game.genres) : [],
+    });
   } catch (error) {
     console.error("Game detail error:", error);
     res.status(500).json({ error: "Failed to fetch game detail" });

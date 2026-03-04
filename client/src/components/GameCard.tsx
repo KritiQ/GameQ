@@ -28,10 +28,18 @@ export default function GameCard({ game, inBacklog, onAdd }: GameCardProps) {
             Released: {formatDate(game.released)}
           </p>
 
-          <p className="card-text small mb-1 rating-text">
+          <p className="card-text small mb-0 rating-text">
             Rating: {game.rating ? game.rating.toFixed(1) : "N/A"}
           </p>
-
+          {game.genres && game.genres.length > 0 && (
+            <div className="genre-tags">
+              {game.genres.slice(0, 3).map((genre) => (
+                <span key={genre} className="genre-badge">
+                  {genre}
+                </span>
+              ))}
+            </div>
+          )}
           <div className="mt-auto">
             {!inBacklog && (
               <button

@@ -65,7 +65,7 @@
 
 .status-badge {
   margin-left: 6px;
-  padding: 4px 10px;
+  padding: 4px 2px;
   border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 600;
@@ -141,4 +141,26 @@
 
 .status-select.dropped {
   color: #ff7b7b;
+}
+.genre-tags {
+  margin-top: 2px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.genre-badge {
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  border-radius: 999px;
+  background: rgba(157, 78, 221, 0.2);
+  color: #c77dff;
+  border: 1px solid rgba(157, 78, 221, 0.4);
+  transition: all 0.2s ease;
+}
+
+.genre-badge:hover {
+  background: rgba(199, 125, 255, 0.3);
+  box-shadow: 0 0 6px rgba(157, 78, 221, 0.3);
 }

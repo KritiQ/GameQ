@@ -22,81 +22,85 @@ export default function GameDetail() {
   const platforms = game.platforms ? JSON.parse(game.platforms) : [];
 
   return (
-    <div className="game-detail">
-      {/* HERO SECTION */}
-      <div
-        className="game-hero"
-        style={{
-          backgroundImage: `url(${game.cover})`,
-        }}
-      >
-        <div className="overlay">
-          <h1>{game.title}</h1>
-          <p>Released: {formatDate(game.released)}</p>
+    <div className="game-detail-wrapper">
+      <div className="game-detail-container">
+        {/* HERO SECTION */}
+        <div className="game-hero-wrapper">
+          <img src={game.cover} alt={game.title} className="game-hero-img" />
         </div>
-      </div>
 
-      {/* CONTENT */}
-      <div className="container mt-4">
-        <div className="row">
-          <div className="col-md-8">
-            <h3>Description</h3>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: game.description || "No description available.",
-              }}
-            />
-          </div>
+        <h1 className="detail-title">{game.title}</h1>
+        <p className="detail-sub">Released: {formatDate(game.released)}</p>
 
-          <div className="col-md-4">
-            <div className="detail-box">
-              <p>
-                <strong>Rating:</strong> {game.rating ?? "N/A"}
-              </p>
-              <p>
-                <strong>Metacritic:</strong> {game.metacritic ?? "N/A"}
-              </p>
-              <p>
-                <strong>Playtime:</strong> {game.playtime ?? "N/A"} hours
-              </p>
-
-              {game.website && (
-                <a
-                  href={game.website}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="btn btn-outline-light w-100 mt-2"
-                >
-                  Official Website
-                </a>
-              )}
+        {/* CONTENT */}
+        <div className="container mt-4">
+          <div className="row">
+            <div className="col-md-8">
+              <h3>Description</h3>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: game.description || "No description available.",
+                }}
+              />
             </div>
 
-            {platforms.length > 0 && (
-              <>
-                <h5 className="mt-4">Platforms</h5>
-                <div>
-                  {platforms.map((p: string, i: number) => (
-                    <span key={i} className="platform-badge">
-                      {p}
-                    </span>
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-        </div>
+            <div className="col-md-4">
+              <div className="detail-box">
+                <p>
+                  <strong>Rating:</strong> {game.rating ?? "N/A"}
+                </p>
+                <p>
+                  <strong>Metacritic:</strong> {game.metacritic ?? "N/A"}
+                </p>
+                <p>
+                  <strong>Playtime:</strong> {game.playtime ?? "N/A"} hours
+                </p>
 
-        {/* EXTRA IMAGE */}
-        {game.backgroundExtra && (
-          <div className="mt-5">
-            <img
-              src={game.backgroundExtra}
-              alt="Extra"
-              className="img-fluid rounded"
-            />
+                {game.website && (
+                  <a
+                    href={game.website}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn btn-outline-light w-100 mt-2"
+                  >
+                    Official Website
+                  </a>
+                )}
+              </div>
+
+              {platforms.length > 0 && (
+                <>
+                  <h5 className="mt-4">Platforms</h5>
+                  <div>
+                    {platforms.map((p: string, i: number) => (
+                      <span key={i} className="platform-badge">
+                        {p}
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
+              <h5 className="mt-4">Genres</h5>
+
+              {game.genres?.map((genre) => (
+                <span key={genre} className="genre-badge">
+                  {genre}
+                </span>
+              ))}
+            </div>
           </div>
-        )}
+
+          {/* EXTRA IMAGE */}
+          {game.backgroundExtra && (
+            <div className="mt-5">
+              <img
+                src={game.backgroundExtra}
+                alt="Extra"
+                className="img-fluid rounded"
+              />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

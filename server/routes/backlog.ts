@@ -18,7 +18,15 @@ router.get("/:userId", async (req: Request, res: Response) => {
       orderBy: { addedAt: "desc" },
     });
 
-    res.json(backlog);
+    res.json(
+      backlog.map((entry) => ({
+        ...entry,
+        game: {
+          ...entry.game,
+          genres: entry.game?.genres ? JSON.parse(entry.game.genres) : [],
+        },
+      })),
+    );
   } catch (error) {
     console.error("GET /backlog error:", error);
     res.status(500).json({ error: "Failed to fetch backlog" });
@@ -73,7 +81,13 @@ router.post("/", async (req: Request, res: Response) => {
       include: { game: true },
     });
 
-    res.status(201).json(entry);
+    res.status(201).json({
+      ...entry,
+      game: {
+        ...entry.game,
+        genres: entry.game?.genres ? JSON.parse(entry.game.genres) : [],
+      },
+    });
   } catch (error: any) {
     console.error("POST /backlog FAILED:", error);
 
@@ -147,7 +161,13 @@ router.put("/:id/status", async (req: Request, res: Response) => {
       include: { game: true },
     });
 
-    res.json(updated);
+    res.json({
+      ...updated,
+      game: {
+        ...updated.game,
+        genres: updated.game?.genres ? JSON.parse(updated.game.genres) : [],
+      },
+    });
   } catch (error: any) {
     console.error("PUT /backlog/:id/status error:", error);
 
