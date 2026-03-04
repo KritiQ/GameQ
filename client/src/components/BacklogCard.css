@@ -164,3 +164,6 @@
   background: rgba(199, 125, 255, 0.3);
   box-shadow: 0 0 6px rgba(157, 78, 221, 0.3);
 }
+.genre-tags span {
+  margin: 0 !important;
+}
