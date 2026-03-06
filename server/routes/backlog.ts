@@ -22,7 +22,11 @@ router.get("/:userId", async (req: Request, res: Response) => {
       backlog.map((entry) => ({
         ...entry,
         game: {
-          ...entry.game,
+          id: entry.game.rawgId, // FIX: use RAWG id for frontend
+          title: entry.game.title,
+          cover: entry.game.cover,
+          released: entry.game.released,
+          rating: entry.game.rating,
           genres: entry.game?.genres ? JSON.parse(entry.game.genres) : [],
         },
       })),
@@ -84,7 +88,11 @@ router.post("/", async (req: Request, res: Response) => {
     res.status(201).json({
       ...entry,
       game: {
-        ...entry.game,
+        id: entry.game.rawgId,
+        title: entry.game.title,
+        cover: entry.game.cover,
+        released: entry.game.released,
+        rating: entry.game.rating,
         genres: entry.game?.genres ? JSON.parse(entry.game.genres) : [],
       },
     });
@@ -164,7 +172,11 @@ router.put("/:id/status", async (req: Request, res: Response) => {
     res.json({
       ...updated,
       game: {
-        ...updated.game,
+        id: updated.game.rawgId,
+        title: updated.game.title,
+        cover: updated.game.cover,
+        released: updated.game.released,
+        rating: updated.game.rating,
         genres: updated.game?.genres ? JSON.parse(updated.game.genres) : [],
       },
     });
