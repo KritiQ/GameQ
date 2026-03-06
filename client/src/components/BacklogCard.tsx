@@ -46,25 +46,31 @@ export default function BacklogCard({
             Rating: {game.rating ? game.rating.toFixed(1) : "N/A"}
           </p>
 
-          <div className="genre-tags">
-            {entry.game.genres?.slice(0, 2).map((genre) => (
-              <span key={genre} className="genre-badge">
-                {genre}
-              </span>
-            ))}
-          </div>
           <div className="mb-1">
             <label className="card-text small d-block mb-1">Status</label>
             <select
               className={`form-select form-select-sm status-select ${entry.status}`}
               value={entry.status}
-              onChange={(e) => onStatusChange(entry.id, e.target.value)}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+              onChange={(e) => {
+                onStatusChange(entry.id, e.target.value);
+              }}
             >
               <option value="planned">Planned</option>
               <option value="playing">Playing</option>
               <option value="completed">Completed</option>
               <option value="dropped">Dropped</option>
             </select>
+          </div>
+          <div className="genre-tags">
+            {entry.game.genres?.slice(0, 2).map((genre) => (
+              <span key={genre} className="genre-badge">
+                {genre}
+              </span>
+            ))}
           </div>
 
           <p className="card-text small mb-3">
