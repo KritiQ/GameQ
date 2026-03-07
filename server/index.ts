@@ -2,6 +2,7 @@ import express from "express";
 import { prisma } from "./prisma";
 import gamesRoutes from "./routes/games";
 import backlogRoutes from "./routes/backlog";
+import authRoutes from "./routes/auth";
 import cors from "cors";
 import dotenv from "dotenv";
 
@@ -11,6 +12,7 @@ const app = express();
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use(express.json());
 
+app.use("/auth", authRoutes);
 app.use("/games", gamesRoutes);
 app.use("/backlog", backlogRoutes);
 

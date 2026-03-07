@@ -3,12 +3,14 @@ import { useSearchParams } from "react-router-dom";
 import type { Game } from "../types";
 import { getDefaultGames } from "../api/games";
 import GameCard from "../components/GameCard";
+import { useAuth } from "../context/AuthContext";
 import "./GamesList.css";
 
 export default function GamesList() {
   const [games, setGames] = useState<Game[]>([]);
   const [backlogRawgIds, setBacklogRawgIds] = useState<number[]>([]);
   const [message, setMessage] = useState("");
+  const { token, user } = useAuth();
 
   const [total, setTotal] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,16 +20,18 @@ export default function GamesList() {
 
   /* Load backlog IDs */
   useEffect(() => {
-    fetch("http://localhost:3001/backlog/1")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to load backlog");
-        return res.json();
-      })
+    if (!token) return;
+    fetch("http://localhost:3001/backlog", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
       .then((data: any[]) =>
         setBacklogRawgIds(data.map((entry) => entry.game.rawgId)),
       )
       .catch(console.error);
-  }, []);
+  }, [token]);
 
   /* Load games when page changes */
   useEffect(() => {
@@ -80,14 +84,13 @@ export default function GamesList() {
   /* Add backlog */
   async function addToBacklog(rawgId: number) {
     const game = games.find((g) => g.id === rawgId);
-    if (!game) return;
+    if (!game || !user) return;
 
     const payload = {
-      userId: 1,
       rawgId: Number(rawgId),
       title: game.title?.trim() || "Untitled",
       cover: game.cover || null,
-      rating: game.rating != null ? Number(game.rating) : null,
+      rating: game.rating ?? null,
       released: game.released || null,
       status: "planned",
     };
@@ -95,15 +98,16 @@ export default function GamesList() {
     try {
       const res = await fetch("http://localhost:3001/backlog", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(payload),
       });
 
       if (!res.ok) throw new Error(`Failed to add (${res.status})`);
 
       setBacklogRawgIds((prev) => [...prev, rawgId]);
-
-      setTimeout(() => setMessage(""), 3000);
     } catch (err) {
       console.error(err);
       setMessage("Error adding to backlog");
@@ -134,7 +138,8 @@ export default function GamesList() {
                 <GameCard
                   game={game}
                   inBacklog={backlogRawgIds.includes(game.id)}
-                  onAdd={addToBacklog}
+                  onAdd={user ? addToBacklog : undefined}
+                  showAddButton={!!user}
                 />
               </div>
             ))}

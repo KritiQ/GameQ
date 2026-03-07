@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react";
 import type { BacklogEntry } from "../types";
 import BacklogCard from "../components/BacklogCard";
+import { useAuth } from "../context/AuthContext";
 import "./BacklogList.css";
 
 export default function MyBacklog() {
   const [entries, setEntries] = useState<BacklogEntry[]>([]);
+  const { token } = useAuth();
 
   async function changeStatus(id: number, status: string) {
+    if (!token) return;
+
     try {
       const res = await fetch(`http://localhost:3001/backlog/${id}/status`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({ status }),
       });
 
@@ -23,8 +30,14 @@ export default function MyBacklog() {
   }
 
   async function loadBacklog() {
+    if (!token) return;
     try {
-      const res = await fetch("http://localhost:3001/backlog/1"); //endpoint for id = 1 for user
+      const res = await fetch("http://localhost:3001/backlog", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       if (!res.ok) throw new Error("Failed");
       const data = await res.json();
       setEntries(data);
@@ -34,15 +47,19 @@ export default function MyBacklog() {
   }
 
   async function remove(id: number) {
+    if (!token) return;
     await fetch(`http://localhost:3001/backlog/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     loadBacklog();
   }
 
   useEffect(() => {
     loadBacklog();
-  }, []);
+  }, [token]);
 
   return (
     <div className="games-list-container">

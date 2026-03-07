@@ -6,10 +6,16 @@ import "./GameCard.css";
 type GameCardProps = {
   game: Game;
   inBacklog: boolean;
-  onAdd: (rawgId: number) => void;
+  onAdd?: (rawgId: number) => void;
+  showAddButton?: boolean;
 };
 
-export default function GameCard({ game, inBacklog, onAdd }: GameCardProps) {
+export default function GameCard({
+  game,
+  inBacklog,
+  onAdd,
+  showAddButton,
+}: GameCardProps) {
   return (
     <Link to={`/game/${game.id}`} className="text-decoration-none text-reset">
       <div className="card game-card h-100 shadow-sm">
@@ -41,13 +47,13 @@ export default function GameCard({ game, inBacklog, onAdd }: GameCardProps) {
             </div>
           )}
           <div className="mt-auto">
-            {!inBacklog && (
+            {showAddButton && !inBacklog && (
               <button
                 className="btn btn-primary btn-md w-100"
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  onAdd(game.id);
+                  onAdd && onAdd(game.id);
                 }}
               >
                 Add to backlog

@@ -1,16 +1,14 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import { prisma } from "../prisma";
 import { Prisma } from "@prisma/client";
+import { authMiddleware, AuthRequest } from "../middleware/auth";
 
 const router = Router();
 
-// GET /backlog/:userId
-router.get("/:userId", async (req: Request, res: Response) => {
+// GET /backlog/
+router.get("/", authMiddleware, async (req: AuthRequest, res) => {
   try {
-    const userId = Number(req.params.userId);
-    if (isNaN(userId)) {
-      return res.status(400).json({ error: "Invalid userId" });
-    }
+    const userId = req.userId!;
 
     const backlog = await prisma.backlogEntry.findMany({
       where: { userId },
@@ -22,7 +20,7 @@ router.get("/:userId", async (req: Request, res: Response) => {
       backlog.map((entry) => ({
         ...entry,
         game: {
-          id: entry.game.rawgId, // FIX: use RAWG id for frontend
+          id: entry.game.rawgId,
           title: entry.game.title,
           cover: entry.game.cover,
           released: entry.game.released,
@@ -32,30 +30,23 @@ router.get("/:userId", async (req: Request, res: Response) => {
       })),
     );
   } catch (error) {
-    console.error("GET /backlog error:", error);
+    console.error("GET backlog error:", error);
     res.status(500).json({ error: "Failed to fetch backlog" });
   }
 });
 
-// POST /backlog
-router.post("/", async (req: Request, res: Response) => {
-  console.log("Received POST /backlog with body:", req.body, null, 2);
-  try {
-    const { userId, rawgId, title, cover, rating, released, status } = req.body;
+// POST /backlog/
 
-    if (typeof userId !== "number" || isNaN(userId)) {
-      return res.status(400).json({ error: "userId must be a number" });
+router.post("/", authMiddleware, async (req: AuthRequest, res) => {
+  try {
+    const userId = req.userId!;
+    const { rawgId, title, cover, rating, released, status } = req.body;
+
+    if (!rawgId || !title || !status) {
+      return res.status(400).json({ error: "Missing required fields" });
     }
-    if (typeof rawgId !== "number" || isNaN(rawgId)) {
-      return res.status(400).json({ error: "rawgId must be a number" });
-    }
-    if (typeof title !== "string" || title.trim() === "") {
-      return res
-        .status(400)
-        .json({ error: "title is required and cannot be empty" });
-    }
+
     if (!["planned", "playing", "completed", "dropped"].includes(status)) {
-      // adjust enum
       return res.status(400).json({ error: "Invalid status" });
     }
 
@@ -65,14 +56,14 @@ router.post("/", async (req: Request, res: Response) => {
         title: title.trim(),
         cover: cover || null,
         released: released || null,
-        rating: rating != null ? Number(rating) : null, // force number
+        rating: rating ? Number(rating) : null,
       },
       create: {
         rawgId,
         title: title.trim(),
         cover: cover || null,
         released: released || null,
-        rating: rating != null ? Number(rating) : null,
+        rating: rating ? Number(rating) : null,
       },
     });
 
@@ -96,40 +87,18 @@ router.post("/", async (req: Request, res: Response) => {
         genres: entry.game?.genres ? JSON.parse(entry.game.genres) : [],
       },
     });
-  } catch (error: any) {
-    console.error("POST /backlog FAILED:", error);
-
-    let status = 500;
-    let message = "Failed to add to backlog";
-    let details = error.message;
-
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === "P2002") {
-        status = 409;
-        message = "Game already exists (unique constraint)";
-      } else if (error.code === "P2003") {
-        status = 400;
-        message = "Foreign key error – user or game not found";
-      } else if (error.code === "P2011") {
-        status = 400;
-        message = "Missing required field (likely title or other non-nullable)";
-      } else if (error.code === "P2000") {
-        status = 400;
-        message = "Invalid data type (e.g. rating not number)";
-      }
-      details = error.meta ? JSON.stringify(error.meta) : error.message;
-    }
-
-    res
-      .status(status)
-      .json({ error: message, details, prismaCode: error?.code });
+  } catch (error) {
+    console.error("POST backlog error:", error);
+    res.status(500).json({ error: "Failed to add backlog" });
   }
 });
 
 // DELETE /backlog/:id
-router.delete("/:id", async (req: Request, res: Response) => {
+
+router.delete("/:id", authMiddleware, async (req: AuthRequest, res) => {
   try {
     const id = Number(req.params.id);
+
     if (isNaN(id)) {
       return res.status(400).json({ error: "Invalid ID" });
     }
@@ -140,17 +109,19 @@ router.delete("/:id", async (req: Request, res: Response) => {
 
     res.json({ success: true });
   } catch (error: any) {
-    console.error("DELETE /backlog error:", error);
+    console.error("DELETE backlog error:", error);
+
     if (error.code === "P2025") {
-      // Prisma record not found
       return res.status(404).json({ error: "Backlog entry not found" });
     }
-    res.status(500).json({ error: "Failed to delete" });
+
+    res.status(500).json({ error: "Failed to delete backlog" });
   }
 });
 
 // PUT /backlog/:id/status
-router.put("/:id/status", async (req: Request, res: Response) => {
+
+router.put("/:id/status", authMiddleware, async (req: AuthRequest, res) => {
   try {
     const id = Number(req.params.id);
     const { status } = req.body;
@@ -181,13 +152,13 @@ router.put("/:id/status", async (req: Request, res: Response) => {
       },
     });
   } catch (error: any) {
-    console.error("PUT /backlog/:id/status error:", error);
+    console.error("PUT backlog status error:", error);
 
     if (error.code === "P2025") {
       return res.status(404).json({ error: "Backlog entry not found" });
     }
 
-    res.status(500).json({ error: "Failed to update status" });
+    res.status(500).json({ error: "Failed to update backlog status" });
   }
 });
 

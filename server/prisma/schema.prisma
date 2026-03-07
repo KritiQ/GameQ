@@ -11,6 +11,10 @@ model User {
   username  String          @unique
   email     String          @unique
   password  String
+
+  avatar    String?
+  bio       String?
+
   backlog   BacklogEntry[]
   createdAt DateTime        @default(now())
 }
