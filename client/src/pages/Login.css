@@ -1,0 +1,80 @@
+.login-container {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 25px;
+  background: #181818;
+  border-radius: 14px;
+  border: 2px solid rgba(157, 78, 221, 0.35);
+  box-shadow:
+    0 0 10px rgba(157, 78, 221, 0.25),
+    0 0 25px rgba(199, 125, 255, 0.1);
+}
+
+.login-title {
+  font-family: "Audiowide", sans-serif;
+  color: #c77dff;
+  text-align: center;
+  text-shadow:
+    0 0 4px #9d4edd,
+    0 0 10px rgba(199, 125, 255, 0.4);
+}
+
+.login-input {
+  background: #1a1a1a !important;
+  color: #eee !important;
+  border: 2px solid rgba(157, 78, 221, 0.3) !important;
+  border-radius: 10px !important;
+  font-family: "Audiowide", sans-serif !important;
+  box-shadow: 0 0 8px rgba(157, 78, 221, 0.3) !important;
+}
+
+.login-input::placeholder {
+  color: rgba(253, 252, 253, 0.493);
+  text-shadow: 0 0 4px rgba(199, 125, 255, 0.5);
+}
+
+.login-input:focus {
+  border-color: #c77dff !important;
+  box-shadow:
+    0 0 8px rgba(199, 125, 255, 0.5),
+    0 0 16px rgba(199, 125, 255, 0.2) !important;
+  outline: none;
+  background: #1a1a1a !important;
+}
+
+.btn-login {
+  background: #9d4edd;
+  border: none;
+  font-weight: bold;
+  transition: all 0.25s ease;
+  border-radius: 9px;
+  color: white;
+  padding: 8px;
+  font-family: "Audiowide", sans-serif;
+  box-shadow: 0 0 6px rgba(157, 78, 221, 0.4);
+}
+
+.btn-login:hover {
+  background: #c77dff;
+  box-shadow: 0 0 12px rgba(199, 125, 255, 0.7);
+  transform: scale(1.02);
+}
+
+.login-register {
+  font-family: "Audiowide", sans-serif;
+  color: white;
+  text-align: center;
+}
+
+.login-register a {
+  color: #c77dff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  transition: all 0.2s ease;
+}
+
+.login-register a:hover {
+  text-shadow:
+    0 0 6px #c77dff,
+    0 0 12px rgba(199, 125, 255, 0.5);
+}

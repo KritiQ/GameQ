@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import "./Login.css";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -30,7 +31,6 @@ export default function Login() {
       }
 
       login(data.token, data.user);
-
       navigate("/games");
     } catch {
       setError("Server error");
@@ -38,14 +38,14 @@ export default function Login() {
   };
 
   return (
-    <div className="container mt-5" style={{ maxWidth: "400px" }}>
-      <h2 className="mb-4">Login</h2>
+    <div className="login-container mt-5">
+      <h2 className="login-title mb-4">Login</h2>
 
       {error && <div className="alert alert-danger">{error}</div>}
 
       <form onSubmit={handleSubmit}>
         <input
-          className="form-control mb-3"
+          className="form-control login-input mb-3"
           type="email"
           placeholder="Email"
           value={email}
@@ -54,7 +54,7 @@ export default function Login() {
         />
 
         <input
-          className="form-control mb-3"
+          className="form-control login-input mb-3"
           type="password"
           placeholder="Password"
           value={password}
@@ -62,10 +62,10 @@ export default function Login() {
           required
         />
 
-        <button className="btn btn-primary w-100">Login</button>
+        <button className="btn-login w-100">Login</button>
       </form>
 
-      <p className="mt-3">
+      <p className="login-register mt-3">
         No account? <Link to="/register">Register</Link>
       </p>
     </div>

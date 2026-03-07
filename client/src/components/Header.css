@@ -1,20 +1,20 @@
 .account-icon {
   color: #a855f7 !important;
   transition: all 0.2s ease;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 }
 
 .nav-item {
   color: #c77dff !important;
   text-shadow: 0 0 2px #9d4edd;
   transition: all 0.2s ease;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 }
 .nav-item:hover {
   color: #c77dff !important;
   text-shadow: 0 0 2px #9d4edd;
   transition: all 0.2s ease;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
 }
 
 .nav-item:hover {
@@ -35,7 +35,7 @@
 .dropdown-item {
   color: #a855f7;
   transition: all 0.2s ease;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 .dropdown-item:hover {

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import "./Register.css";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -7,10 +8,16 @@ export default function Register() {
   const [username, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
 
     try {
       const res = await fetch("http://localhost:3001/auth/register", {
@@ -32,8 +39,6 @@ export default function Register() {
         return;
       }
 
-      localStorage.setItem("token", data.token);
-
       navigate("/login");
     } catch {
       setError("Server error");
@@ -41,7 +46,7 @@ export default function Register() {
   };
 
   return (
-    <div className="container mt-5" style={{ maxWidth: "400px" }}>
+    <div className="register-container">
       <h2 className="mb-4">Register</h2>
 
       {error && <div className="alert alert-danger">{error}</div>}
@@ -70,6 +75,15 @@ export default function Register() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <input
+          className="form-control mb-3"
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
 
