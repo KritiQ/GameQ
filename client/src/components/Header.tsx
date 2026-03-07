@@ -28,7 +28,7 @@ export default function Header() {
 
   return (
     <nav className="navbar navbar-expand-lg main-navbar">
-      <div className="container" style={{ maxWidth: "1200px" }}>
+      <div className="container" style={{ maxWidth: "1220px" }}>
         <div className="container-fluid d-flex align-items-center">
           <Link className="navbar-brand logo-neon fw-bold fs-3" to="/">
             GameQ
@@ -89,18 +89,36 @@ export default function Header() {
             </ul>
 
             {/* Desktop right side */}
-            <div className="ms-auto d-none d-lg-flex align-items-center">
+            <div className="ms-auto d-flex align-items-center">
               {user ? (
-                <button
-                  className="btn border-0 account-icon"
-                  onClick={handleLogout}
-                >
-                  <i className="bi bi-box-arrow-right fs-3"></i>
-                </button>
+                <div className="dropdown">
+                  <button
+                    className="btn border-0 account-icon"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i className="bi bi-person-circle fs-2"></i>
+                  </button>
+
+                  <ul className="dropdown-menu dropdown-menu-end">
+                    {/* Future items */}
+                    <li>
+                      <Link className="dropdown-item" to="/">
+                        Settings
+                      </Link>
+                    </li>
+                    <li>
+                      <button className="dropdown-item" onClick={handleLogout}>
+                        Logout
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               ) : (
-                <Link className="nav-link account-icon" to="/login">
-                  <i className="bi bi-person-circle fs-3"></i>
-                </Link>
+                <div className="nav-item">
+                  <Link className="nav-link" to="/login">
+                    Login
+                  </Link>
+                </div>
               )}
             </div>
           </div>

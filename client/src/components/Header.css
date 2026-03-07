@@ -1,7 +1,51 @@
-.main-navbar {
-  transform: translateX(-13px);
-}
 .account-icon {
-  padding-left: 780px;
-  transition: transform 0.2s ease;
+  color: #a855f7 !important;
+  transition: all 0.2s ease;
+  font-size: 1.1rem;
+}
+
+.nav-item {
+  color: #c77dff !important;
+  text-shadow: 0 0 2px #9d4edd;
+  transition: all 0.2s ease;
+  font-size: 1.1rem;
+}
+.nav-item:hover {
+  color: #c77dff !important;
+  text-shadow: 0 0 2px #9d4edd;
+  transition: all 0.2s ease;
+  font-size: 1.1rem;
+}
+
+.nav-item:hover {
+  color: #e0aaff !important;
+  text-shadow:
+    0 0 5px #c77dff,
+    0 0 10px #c77dff,
+    0 0 20px rgba(199, 125, 255, 0.6);
+}
+
+.dropdown-menu {
+  background-color: #111;
+  border: 1px solid #a855f7;
+  min-width: 180px;
+  padding: 10px 5px;
+}
+
+.dropdown-item {
+  color: #a855f7;
+  transition: all 0.2s ease;
+  font-size: 1.1rem;
+}
+
+.dropdown-item:hover {
+  background-color: #111;
+  color: #c084fc;
+  transition: all 0.2s ease;
+  text-shadow: 0 0 6px #a855f7;
+  transform: scale(1.05);
+}
+
+.dropdown-toggle::after {
+  display: none;
 }
