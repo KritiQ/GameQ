@@ -68,8 +68,8 @@
 
 .login-register a {
   color: #c77dff;
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  text-decoration: none;
+  font-weight: 550;
   transition: all 0.2s ease;
 }
 

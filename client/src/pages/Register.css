@@ -62,3 +62,20 @@
 .register-container a:hover {
   text-shadow: 0 0 6px rgba(199, 125, 255, 0.8);
 }
+.login-register {
+  font-family: "Audiowide", sans-serif;
+  color: white;
+  text-align: center;
+}
+
+.login-register a {
+  color: #c77dff;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.login-register a:hover {
+  text-shadow:
+    0 0 6px #c77dff,
+    0 0 12px rgba(199, 125, 255, 0.5);
+}

@@ -90,7 +90,7 @@ export default function Register() {
         <button className="btn btn-success w-100">Register</button>
       </form>
 
-      <p className="mt-3">
+      <p className="login-register mt-3">
         Already have account? <Link to="/login">Login</Link>
       </p>
     </div>

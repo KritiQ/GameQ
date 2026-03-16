@@ -28,7 +28,7 @@ export default function GamesList() {
     })
       .then((res) => res.json())
       .then((data: any[]) =>
-        setBacklogRawgIds(data.map((entry) => entry.game.rawgId)),
+        setBacklogRawgIds(data.map((entry) => entry.game.id)),
       )
       .catch(console.error);
   }, [token]);
