@@ -35,38 +35,52 @@ export default function Header() {
           </Link>
 
           {/* Mobile right side */}
-          <div className="d-flex ms-auto align-items-center d-lg-none">
-            {user ? (
-              <button
-                className="btn border-0 account-icon"
-                onClick={handleLogout}
-              >
-                <i className="bi bi-box-arrow-right fs-3"></i>
-              </button>
-            ) : (
-              <Link
-                className="nav-link text-decoration-none account-icon"
-                to="/login"
-              >
-                <i className="bi bi-person-circle fs-3"></i>
-              </Link>
-            )}
-
+          <div className="d-flex ms-auto align-items-center gap-2 d-lg-none">
             <button
               className="navbar-toggler border-0"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#mainNav"
+              aria-controls="mainNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
             >
               <span className="navbar-toggler-icon"></span>
             </button>
+
+            {user ? (
+              <div className="dropdown">
+                <button
+                  className="btn border-0 account-icon dropdown-toggle"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i className="bi bi-person-circle fs-3"></i>
+                </button>
+
+                <ul className="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <Link className="dropdown-item" to="/">
+                      Settings
+                    </Link>
+                  </li>
+                  <li>
+                    <button className="dropdown-item" onClick={handleLogout}>
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            ) : (
+              <Link className="nav-link login-link-mobile" to="/login">
+                Login
+              </Link>
+            )}
           </div>
 
           {/* Menu */}
-          <div
-            className="collapse navbar-collapse justify-content-center"
-            id="mainNav"
-          >
+          <div className="collapse navbar-collapse" id="mainNav">
             <ul className="navbar-nav fs-5">
               <li className="nav-item">
                 <Link className="nav-link" to="/">
@@ -79,6 +93,7 @@ export default function Header() {
                   Games
                 </Link>
               </li>
+
               {user && (
                 <li className="nav-item">
                   <Link className="nav-link" to="/backlog">
@@ -89,18 +104,19 @@ export default function Header() {
             </ul>
 
             {/* Desktop right side */}
-            <div className="ms-auto d-flex align-items-center">
+            <div className="ms-auto d-none d-lg-flex align-items-center">
               {user ? (
                 <div className="dropdown">
                   <button
-                    className="btn border-0 account-icon"
+                    className="btn border-0 account-icon dropdown-toggle"
+                    type="button"
                     data-bs-toggle="dropdown"
+                    aria-expanded="false"
                   >
                     <i className="bi bi-person-circle fs-2"></i>
                   </button>
 
                   <ul className="dropdown-menu dropdown-menu-end">
-                    {/* Future items */}
                     <li>
                       <Link className="dropdown-item" to="/">
                         Settings
