@@ -33,7 +33,6 @@ The app is inspired by watchlist systems (like movie or anime trackers), allowin
 <img width="1860" height="957" alt="image" src="https://github.com/user-attachments/assets/cc68f0c7-aab3-4853-9866-7bffbc9cc27c" />
 <img width="1861" height="957" alt="image" src="https://github.com/user-attachments/assets/17b1caa9-f11b-4220-9b87-66d190832a03" />
 <img width="1862" height="961" alt="image" src="https://github.com/user-attachments/assets/e1f2d600-d816-4636-983f-e52a31fbc226" />
-![Uploading image.png…]()
 
 ---
 
