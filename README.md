@@ -2,7 +2,8 @@
 
 GameQ is a web application for tracking video games you want to play, are currently playing, or have already completed.
 
-The app is inspired by watchlist systems (like movie or anime trackers), allowing users to manage their personal gaming backlog in a clean cyberpunk-themed interface.
+The app is inspired by watchlist systems (like movie or anime trackers), allowing users to manage their personal gaming backlog.
+Designed with a cyberpunk-inspired purple neon UI.
 
 ---
 
