@@ -29,6 +29,7 @@ The app is inspired by watchlist systems (like movie or anime trackers), allowin
 
 ## Screenshots
 
+<img width="1861" height="961" alt="image" src="https://github.com/user-attachments/assets/32c4b1c2-153f-4bf9-a4b5-072ab7e3d27e" />
 <img width="1858" height="962" alt="image" src="https://github.com/user-attachments/assets/1c19cbcd-802c-45a9-95fd-fb433d26ee2a" />
 <img width="1860" height="957" alt="image" src="https://github.com/user-attachments/assets/cc68f0c7-aab3-4853-9866-7bffbc9cc27c" />
 <img width="1861" height="957" alt="image" src="https://github.com/user-attachments/assets/17b1caa9-f11b-4220-9b87-66d190832a03" />
